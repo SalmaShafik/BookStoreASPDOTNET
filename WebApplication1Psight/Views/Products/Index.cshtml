@@ -1,0 +1,109 @@
+﻿@* @model List<Product> *@
+@using PagedList
+@using PagedList.Mvc
+@model IPagedList<Product>
+
+
+@* @using (Html.BeginForm("Index", "Products", FormMethod.Get))
+{
+    <div class="form-group">
+        @Html.Label("Category:")
+        @Html.DropDownList("categoryId", ViewBag.Categories as SelectList, "All Categories", new { @class = "form-control" })
+        <input type="submit" value="Filter" class="btn btn-primary" />
+    </div>
+} *@
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Products List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Products" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> &nbsp;Create New Product
+            </a>
+
+        </div>
+  
+        @using (Html.BeginForm("Index", "Products", FormMethod.Get))
+        {
+            <div class="form-group">
+                @Html.Label("Select Category")
+                @Html.DropDownList("categoryId", ViewBag.Categories as SelectList, "All Categories", new { @class = "form-control" })
+                <input type="submit" value="Filter" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+    <br />     <br />
+
+<table class="table">
+    <tr>
+   @*   <th>Product ID</th> *@
+      
+        <th>Product Name</th>
+            <th>Product Category</th>
+
+        <!-- Add more product properties as needed -->
+    </tr>
+        <div id="pagination-container">
+            
+     
+    @foreach (var product in Model)
+    { 
+        <tr>
+           @*  <td>@product.Id</td> *@
+
+                <td><a href="/Products/Details/@product.Id">@product.Name   </a></td>
+         
+            <td>@product.Category.Name</td>
+                <td>
+                    <div class="w-75 btn-group" role="group">
+                        <a href="/Products/Details/@product.Id" class=" btn btn-primary mx-2">
+
+                            <i class="bi bi-pencil-square"></i>
+                            Details
+                        </a>
+
+                    <a href="/Products/Edit/@product.Id" class=" btn btn-primary mx-2">
+ 
+                            <i class="bi bi-pencil-square"></i>
+                            Edit
+                        </a>
+
+                        <a href="/Products/Delete/@product.Id" class=" btn btn-danger mx-2">
+
+                            <i class="bi bi-trash-fill"></i> Delete
+                        </a>
+                    </div>
+                </td>
+            <!-- Display more product properties as needed -->
+        </tr>
+
+            }
+</div>
+</table>
+
+    <!-- Pagination controls -->
+<div id="pagination">
+<button id="prev-page">Previous</button>
+<span id="current-page">Page @(Model.PageNumber) of @(Model.PageCount)</span>
+<button id="next-page">Next</button>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#prev-page').on('click', function () {
+            if (@Model.HasPreviousPage.ToString().ToLower()) {
+                var prevPage = @(Model.PageNumber - 1);
+                window.location.href = '@Url.Action("Index", new { page = "' + prevPage + '" })';
+            }
+        });
+
+        $('#next-page').on('click', function () {
+            if (@Model.HasNextPage.ToString().ToLower()) {
+                var nextPage = @(Model.PageNumber + 1);
+                window.location.href = '@Url.Action("Index", new { page = "' + nextPage + '" })';
+            }
+        });
+    });
+</script>

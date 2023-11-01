@@ -1,0 +1,68 @@
+﻿@* //capture the model that we're passing from the controller
+ *@
+
+@model IEnumerable<Category>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@* <partial name="_Notification" />  put in _Layout to be shown in all pages
+ *@
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Category List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Category" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> &nbsp;Create New Category
+            </a>
+        </div>
+
+    </div>
+    <br />     <br />
+
+    <table class="table table-bordered table-stripped" " style=" width:100% ;border: 1px solid black; border-collapse: collapse; background-color: #f2f2f2; font-family: Arial, sans-serif; font-size: 14px;">
+        <thead>
+            <tr>
+                <th style="color:black">
+                    Category Name
+                </th>
+                <th style="color:black">
+                    Display Order
+                </th>
+                <th>   </th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+    @foreach (var obj in Model)
+    {
+                <tr>
+                    <td style="width:50%; color:black">
+                @obj.Name
+                    </td>
+                    <td style="width:30%; color:black">
+                @obj.DisplayOrder
+                    </td>
+                    <td>
+                        <div class="w-75 btn-group" role="group">
+                            <a href="/Category/Edit/@obj.Id" class=" btn btn-primary mx-2">
+
+                                <i class="bi bi-pencil-square"></i>
+                                Edit
+                            </a>
+                            <a href="/Category/Delete/@obj.Id" class=" btn btn-danger mx-2">
+
+                                <i class="bi bi-trash-fill"></i> Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+    }
+        </tbody>
+
+    </table>
+</div>
